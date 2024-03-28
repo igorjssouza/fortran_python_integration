@@ -1,8 +1,11 @@
 program main
     use factorial_mod
     implicit none
-    integer :: n = 5
+    integer :: n
     integer :: result
+
+    write(*,*) "Enter the number: "
+    read(*,*) n
 
     ! Compute the factorial of n
     call factorial (n, result)
