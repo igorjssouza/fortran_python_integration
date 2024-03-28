@@ -1,5 +1,5 @@
 program main
-    use factorial_mod
+    use math_functions
     implicit none
     integer :: n
     integer :: result
@@ -12,4 +12,7 @@ program main
 
     ! Print the result
     print *, "Factorial of", n, "is", result
+
+    ! Compute the nth Fibonacci number
+    print *, n, "th Fibonacci number is", fibonacci(n)
 end program main
