@@ -1,0 +1,23 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module math_lib ! in 
+    interface  ! in :math_lib
+        module math_factorial ! in :math_lib:math_interface.f90
+            subroutine factorial(n,result) ! in :math_lib:math_interface.f90:math_factorial
+                integer intent(in) :: n
+                integer intent(out) :: result
+            end subroutine factorial
+        end module math_factorial
+        module math_fibonacci ! in :math_lib:math_interface.f90
+            function fibonacci(n) ! in :math_lib:math_interface.f90:math_fibonacci
+                integer intent(in) :: n
+                integer :: fibonacci
+            end function fibonacci
+        end module math_fibonacci
+    end interface 
+end python module math_lib
+
+! This file was auto-generated with f2py (version:1.24.4).
+! See:
+! https://web.archive.org/web/20140822061353/http://cens.ioc.ee/projects/f2py2e
