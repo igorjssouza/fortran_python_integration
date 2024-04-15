@@ -1,13 +1,26 @@
 # Fortran python integration
 
 
-### This code defines a module factorial_mod, which contains a subroutine factorial. The factorial subroutine takes an integer n as input and computes its factorial, storing the result in the output variable result.
+### Step 1 - Generate the factorial.o and fibonacci.o
 
-### To compile this Fortran code into a library, you can use a 2py3 Python numpy library. Pay attention to number 3 in the end of f2py3, it represents the curret python version.
+gfortran -c factorial.f90 fibonacci.f90
 
-f2py3 -c -m fibonacci_factorial_lib fibonacci_factorial_lib.f90
+### It will produce two output files 
 
-### After compilation, you'll have a library file named fibonacci_factorial_lib.so to use in python script.
+factorial.o and fibonacci.o (object files)
 
-### to usu inside yout python script:
-import fibonacci_factorial_lib
+## Step 2 - Generate the fibonacci_factorial_lib.a
+
+ar rcs fibonacci_factorial_lib.a factorial.o fibonacci.o
+
+### Step 3 - Create a signature file. First, you need a signature file from the Fortran sources. This step assumes you at least know the interface (subroutine and function definitions) of the Fortran code. If you don't have this information, you'll need to obtain it from the original source code or documentation. Generate the signature file:
+
+f2py3 -m math_lib -h math_lib.pyf math_interface.f90
+
+### Step 4 - Compile with f2py3 Using Object Files and Static Library
+
+f2py3 -c math_lib.pyf factorial.o fibonacci.o
+
+### Or
+
+f2py3 -c math_lib.pyf -L. fibonacci_factorial_lib.a (our case)
