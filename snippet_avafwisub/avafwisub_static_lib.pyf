@@ -1,0 +1,40 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module avafwisub_static_lib ! in 
+    interface  ! in :avafwisub_static_lib
+        subroutine avafwisub(na,dtin,nx,dx,na1,na2,x1,nangout1,nangout2,realsis,vp,vs,rho,wavelet,freqmax,famp,napulso,h,nitex,ermin,lambda,chsis,sisout,chout,evp,evs,erho) ! in :avafwisub_static_lib:avafwisub_interface.f90
+            integer, optional,intent(in),check(shape(realsis, 0) == na),depend(realsis) :: na=shape(realsis, 0)
+            real intent(in) :: dtin
+            integer, optional,intent(in),check(shape(realsis, 1) == nx),depend(realsis) :: nx=shape(realsis, 1)
+            real intent(in) :: dx
+            integer intent(in) :: na1
+            integer intent(in) :: na2
+            real intent(in) :: x1
+            integer intent(in) :: nangout1
+            integer intent(in) :: nangout2
+            real dimension(na,nx),intent(in) :: realsis
+            real dimension(na),intent(inout),depend(na) :: vp
+            real dimension(na),intent(inout),depend(na) :: vs
+            real dimension(na),intent(inout),depend(na) :: rho
+            real dimension(128),intent(in) :: wavelet
+            real intent(in) :: freqmax
+            real intent(in) :: famp
+            integer intent(in) :: napulso
+            real intent(in) :: h
+            integer intent(in) :: nitex
+            real intent(in) :: ermin
+            real intent(in) :: lambda
+            integer intent(in) :: chsis
+            real dimension(na,nx),intent(out),depend(nx,na) :: sisout
+            integer intent(in) :: chout
+            real intent(in) :: evp
+            real intent(in) :: evs
+            real intent(in) :: erho
+        end subroutine avafwisub
+    end interface 
+end python module avafwisub_static_lib
+
+! This file was auto-generated with f2py (version:1.24.4).
+! See:
+! https://web.archive.org/web/20140822061353/http://cens.ioc.ee/projects/f2py2e
