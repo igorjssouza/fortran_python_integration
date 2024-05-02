@@ -3,27 +3,23 @@
 
 ### Step 1 - Generate the factorial.o and fibonacci.o
 
-gfortran -c factorial.f90 fibonacci.f90
+gfortran -c avafwisub.f90
 
-### It will produce two output files 
+### It will produce two output file
 
-factorial.o and fibonacci.o (object files)
+avafwisub.o (object file)
 
 ## Step 2 - Generate the fibonacci_factorial_lib.a
 
-ar rcs fibonacci_factorial_lib.a factorial.o fibonacci.o
+ar rcs avafwisub.a avafwisub.o
 
 ### Step 3 - Create a signature file. First, you need a signature file from the Fortran sources. This step assumes you at least know the interface (subroutine and function definitions) of the Fortran code. If you don't have this information, you'll need to obtain it from the original source code or documentation. Generate the signature file:
 
-f2py3 -m avafwisub_lib -h avafwisub_lib.pyf avafwisub_interface.f90
+f2py3 -m avafwisub_static_lib -h avafwisub_static_lib.pyf avafwisub_interface.f90
 
-### Step 4 - Compile with f2py3 Using Object Files and Static Library
+### Step 4 - Compile with f2py3 Using Static Library
 
-f2py3 -c math_lib.pyf factorial.o fibonacci.o
-
-### Or
-
-f2py3 -c avafwisub_lib.pyf -L. avafwisub.a (our case)
+f2py3 -c avafwisub_static_lib.pyf -L. avafwisub.a
 
 ### Run fortran main
 
