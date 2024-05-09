@@ -1,0 +1,24 @@
+{
+    "na": 128,
+    "nx": 10,
+    "dtin": 0.004,
+    "x1": 5.0,
+    "dx": 5.0,
+    "na1": 30,
+    "na2": 80,
+    "nangout1": 5,
+    "nangout2": 50,
+    "h": 4.0,
+    "nitex": 15,
+    "ermin": 0.1,
+    "lambda_": 0.12,
+    "evp": 1.0,
+    "evs": 1.0,
+    "erho": 1.0,
+    "freqmax": 249.999958,
+    "famp": 1.0,
+    "napulso": 11,
+    "chsis": 1,
+    "chout": 1
+  }
+  
