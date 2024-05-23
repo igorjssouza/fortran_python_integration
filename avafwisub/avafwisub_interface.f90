@@ -8,5 +8,5 @@ REAL, INTENT(IN) :: dtin,x1,dx,freqmax,famp,h,ermin,lambda
 REAL, INTENT(IN) :: evp,evs,erho
 REAL, INTENT(IN) :: realsis(na,nx),wavelet(128)
 REAL, INTENT(INOUT) :: vp(na),vs(na),rho(na)
-REAL, INTENT(OUT) :: sisout(na,nx)
+REAL, INTENT(INOUT) :: sisout(na,nx)
 END SUBROUTINE avafwisub

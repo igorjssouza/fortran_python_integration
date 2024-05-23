@@ -26,7 +26,7 @@ python module avafwisub_static_lib ! in
             real intent(in) :: ermin
             real intent(in) :: lambda
             integer intent(in) :: chsis
-            real dimension(na,nx),intent(out),depend(na,nx) :: sisout
+            real dimension(na,nx),intent(inout),depend(nx,na) :: sisout
             integer intent(in) :: chout
             real intent(in) :: evp
             real intent(in) :: evs

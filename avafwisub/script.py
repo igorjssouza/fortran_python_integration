@@ -54,7 +54,7 @@ chout = constants["chout"]       # (0) vp, vs e den relativos (1) vp, vs e den a
 # Reshape realsis_array into realsis matrix
 # if realsis_array.size == na * nx:
 realsis = realsis_array.reshape((nx, na)).T
-    # sisout = np.zeros((nx, na), dtype=np.float32).T
+sisout = np.zeros((nx, na), dtype=np.float32).T
 # else:
     # raise ValueError("Size of realsis_array does not match na * nx")
 
@@ -79,15 +79,7 @@ plot_and_save(rho, 'RHO', 'rho_plot.pdf')
 
 # Call the Fortran subroutine
 try:
-    # sisout=[]
-    # rows, cols=na,nx
-    # for i in range(rows):
-    #     col = []
-    #     for j in range(cols):
-    #         col.append(0)
-    #     sisout.append(col)
-    sisout=avafwi.avafwisub(dtin, dx, na1, na2, x1, nangout1, nangout2, realsis, vp, vs, rho, wavelet, freqmax, famp, napulso, h, nitex, ermin, lambda_, chsis, chout, evp, evs, erho,[na,nx])
-    # sisout=avafwi.avafwisub(na,dtin,nx, dx, na1, na2, x1, nangout1, nangout2, realsis, vp, vs, rho, wavelet, freqmax, famp, napulso, h, nitex, ermin, lambda_, chsis, chout, evp, evs, erho)
+    vp, vs, rho, sisout=avafwi.avafwisub(dtin, dx, na1, na2, x1, nangout1, nangout2, realsis, vp, vs, rho, wavelet, freqmax, famp, napulso, h, nitex, ermin, lambda_, chsis, sisout, chout, evp, evs, erho,[na,nx])
     # sismograma de diferença ou modelado <real(na,nx)>
 except Exception as e:
     print("Error calling Fortran subroutine:", e)
