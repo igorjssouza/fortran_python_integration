@@ -1,5 +1,4 @@
 program avafwi
-
 !
 ! Programa para determinacao dos parametros elasticos de 
 ! uma camada ( Vp, Vs e Den.) usando a tecnica de Inversao de

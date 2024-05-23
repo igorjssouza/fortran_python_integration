@@ -22,40 +22,41 @@ def load_constants(json_path):
 constants = load_constants('constants.json')
 
 # Load data from files
-wavelet = load_data('bin_files/wavelet-exp1.dat', pd.read_csv).to_numpy(dtype=np.float32)
-realsis_array = load_data('bin_files/anglegather-exp1.bin', np.fromfile, dtype=np.float32)
-vp = load_data('bin_files/trendmodvp-exp1.bin', np.fromfile, dtype=np.float32)
-vs = load_data('bin_files/trendmodvs-exp1.bin', np.fromfile, dtype=np.float32)
-rho = load_data('bin_files/trendmodrho-exp1.bin', np.fromfile, dtype=np.float32)
+wavelet = load_data('bin_files/wavelet-exp1.dat', pd.read_csv).to_numpy(dtype=np.float32) # pulso sismico <real(128)>
+realsis_array = load_data('bin_files/anglegather-exp1.bin', np.fromfile, dtype=np.float32) # conjunto de angulos de entrada <real(na,nx)>
+vp = load_data('bin_files/trendmodvp-exp1.bin', np.fromfile, dtype=np.float32) # modelo inicial de VP (m/s) <real(na)>
+vs = load_data('bin_files/trendmodvs-exp1.bin', np.fromfile, dtype=np.float32) # modelo inicial de VS (m/s) <real(na)>
+rho = load_data('bin_files/trendmodrho-exp1.bin', np.fromfile, dtype=np.float32) # modelo inicial de densidade (Kg/m3) <real(na)>
 
 # Extract constants
-na = constants["na"]
-nx = constants["nx"]
-dtin = constants["dtin"]
-x1 = constants["x1"]
-dx = constants["dx"]
-na1 = constants["na1"]
-na2 = constants["na2"]
-nangout1 = constants["nangout1"]
-nangout2 = constants["nangout2"]
-h = constants["h"]
-nitex = constants["nitex"]
-ermin = constants["ermin"]
-lambda_ = constants["lambda_"]
-evp = constants["evp"]
-evs = constants["evs"]
-erho = constants["erho"]
-freqmax = constants["freqmax"]
-famp = constants["famp"]
-napulso = constants["napulso"]
-chsis = constants["chsis"]
-chout = constants["chout"]
+na = constants["na"]             # num. de amostras do conjunto de entrada <integer>
+nx = constants["nx"]             # num. de angulos do conjunto de entrada <integer>
+dtin = constants["dtin"]         # intervalo de amostragem <real>
+x1 = constants["x1"]             # primeiro angulo(graus) <real>
+dx = constants["dx"]             # intervalo entre angulos (graus) <real>
+na1 = constants["na1"]           # inicio janela temporal de inversao (Num. amostra) <integer> === verificar parametro ===
+na2 = constants["na2"]           # final  janela temporal de invpersao (Num. amostra) <integer>=== verificar parametro ===
+nangout1 = constants["nangout1"] # angulo inicial p/ inversao (Num. traco) <integer> === verificar parametro ===
+nangout2 = constants["nangout2"] # angulo final p/ inversao   (Num. traco) <integer> === verificar parametro ===
+h = constants["h"]               # espessura das camadas elementares para inversao (m) <real> === verificar parametro ===
+nitex = constants["nitex"]       # numero maximo de iteracoes  <integer>
+ermin = constants["ermin"]       # erro normalizado minimo <real>
+lambda_ = constants["lambda_"]   # fator de regularizacao  <real>     === verificar parametro ===
+evp = constants["evp"]           # energia de vp relativo 
+evs = constants["evs"]           # energia de vs relativo 
+erho = constants["erho"]         # energia de den relativo 
+freqmax = constants["freqmax"]   # freq. maxima do pulso sismico (Hz) <real>
+famp = constants["famp"]         # fator de amplitude do pulso sismico <real> === verificar parametro ===
+napulso = constants["napulso"]   # duracao efetiva do pulso (Num. amostras) <integer> forcido pelo avafwiprog-v6-3
+chsis = constants["chsis"]       # (0) disis=modelado (1) dsis=diferenca <integer>
+chout = constants["chout"]       # (0) vp, vs e den relativos (1) vp, vs e den absolutos <integer>
 
 # Reshape realsis_array into realsis matrix
-if realsis_array.size == na * nx:
-    realsis = realsis_array.reshape((nx, na)).T
-else:
-    raise ValueError("Size of realsis_array does not match na * nx")
+# if realsis_array.size == na * nx:
+realsis = realsis_array.reshape((nx, na)).T
+    # sisout = np.zeros((nx, na), dtype=np.float32).T
+# else:
+    # raise ValueError("Size of realsis_array does not match na * nx")
 
 def plot_and_save(data, title, filename):
     """Plots the data and saves the plot as a PDF."""
@@ -78,7 +79,16 @@ plot_and_save(rho, 'RHO', 'rho_plot.pdf')
 
 # Call the Fortran subroutine
 try:
-    sisout = avafwi.avafwisub(dtin, dx, na1, na2, x1, nangout1, nangout2, realsis, vp, vs, rho, wavelet, freqmax, famp, napulso, h, nitex, ermin, lambda_, chsis, chout, evp, evs, erho)
+    # sisout=[]
+    # rows, cols=na,nx
+    # for i in range(rows):
+    #     col = []
+    #     for j in range(cols):
+    #         col.append(0)
+    #     sisout.append(col)
+    sisout=avafwi.avafwisub(dtin, dx, na1, na2, x1, nangout1, nangout2, realsis, vp, vs, rho, wavelet, freqmax, famp, napulso, h, nitex, ermin, lambda_, chsis, chout, evp, evs, erho,[na,nx])
+    # sisout=avafwi.avafwisub(na,dtin,nx, dx, na1, na2, x1, nangout1, nangout2, realsis, vp, vs, rho, wavelet, freqmax, famp, napulso, h, nitex, ermin, lambda_, chsis, chout, evp, evs, erho)
+    # sismograma de diferença ou modelado <real(na,nx)>
 except Exception as e:
     print("Error calling Fortran subroutine:", e)
     exit(1)
